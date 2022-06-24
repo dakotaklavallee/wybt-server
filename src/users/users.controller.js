@@ -77,6 +77,7 @@ async function update(req, res) {
 }
 
 async function updateAvatar(req, res) {
+  console.log(req.body);
   const avatarId = req.body.data.avatar_id;
   const user = res.locals.user;
   const updatedUser = {
@@ -159,8 +160,6 @@ module.exports = {
   updateAvatar: [
     asyncErrorBoundary(userExists),
     hasOnlyValidProperties,
-    hasRequiredProperties,
-    hasRequiredValidNums,
     asyncErrorBoundary(updateAvatar),
   ],
   finishSurvey: [
