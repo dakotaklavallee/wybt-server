@@ -5,6 +5,7 @@ exports.up = function(knex) {
       table.string("email");
       table.integer("points");
       table.boolean("survey_done");
+      table.integer("survey_index");
       table.integer("avatar_id")
       .unsigned()
       .notNullable();

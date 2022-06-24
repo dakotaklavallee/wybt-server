@@ -5,7 +5,8 @@ const hasRequiredProperties = hasProperties(
   "username",
   "email",
   "avatar_id",
-  "survey_done"
+  "survey_done",
+  "survey_index"
 );
 const hasValidNums = require("../errors/hasValidNums");
 const hasRequiredValidNums = hasValidNums("points");
@@ -19,6 +20,7 @@ const VALID_PROPERTIES = [
   "avatar_id",
   "created_at",
   "updated_at",
+  "survey_index",
 ];
 
 function hasOnlyValidProperties(req, res, next) {
@@ -74,10 +76,64 @@ async function update(req, res) {
   res.json({ data });
 }
 
+async function updateAvatar(req, res) {
+  const avatarId = req.body.data.avatar_id;
+  const user = res.locals.user;
+  const updatedUser = {
+    ...user,
+    avatar_id: avatarId,
+  };
+  const data = await service.update(updatedUser);
+  res.json({ data });
+}
+
 async function destroy(req, res) {
-    await service.delete(res.locals.user.user_id);
-    res.sendStatus(204);
-  }
+  await service.delete(res.locals.user.user_id);
+  res.sendStatus(204);
+}
+
+async function advanceUser(req, res) {
+  const user = res.locals.user;
+  const updatedUser = {
+    ...user,
+    survey_index: (user.survey_index + 1),
+  };
+  const data = await service.update(updatedUser);
+  res.json({ data });
+}
+
+async function finishSurvey(req, res){
+  const user = res.locals.user;
+  const updatedUser = {
+    ...user,
+    survey_done: true,
+  };
+  console.log(updatedUser);
+  const data = await service.update(updatedUser);
+  res.json({ data });
+}
+
+async function addPoints(req, res){
+  const user = res.locals.user;
+  const updatedUser = {
+    ...user,
+    points: user.points + 1000,
+  };
+  console.log(updatedUser);
+  const data = await service.update(updatedUser);
+  res.json({ data });
+}
+
+async function redeemPoints(req, res){
+  const user = res.locals.user;
+  const updatedUser = {
+    ...user,
+    points: user.points - req.body.data.redeemedPoints,
+  };
+  console.log(updatedUser);
+  const data = await service.update(updatedUser);
+  res.json({ data });
+}
 
 module.exports = {
   list: asyncErrorBoundary(list),
@@ -88,14 +144,38 @@ module.exports = {
     asyncErrorBoundary(create),
   ],
   update: [
-      asyncErrorBoundary(userExists),
-      hasOnlyValidProperties,
-      hasRequiredProperties,
-      hasRequiredValidNums,
-      asyncErrorBoundary(update),
+    asyncErrorBoundary(userExists),
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    hasRequiredValidNums,
+    asyncErrorBoundary(update),
   ],
-  delete: [
-      asyncErrorBoundary(userExists),
-      asyncErrorBoundary(destroy),
+  delete: [asyncErrorBoundary(userExists), asyncErrorBoundary(destroy)],
+  advanceUser: [
+    asyncErrorBoundary(userExists),
+    hasOnlyValidProperties,
+    asyncErrorBoundary(advanceUser),
   ],
+  updateAvatar: [
+    asyncErrorBoundary(userExists),
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    hasRequiredValidNums,
+    asyncErrorBoundary(updateAvatar),
+  ],
+  finishSurvey: [
+    asyncErrorBoundary(userExists),
+    hasOnlyValidProperties,
+    asyncErrorBoundary(finishSurvey),
+  ],
+  addPoints: [
+    asyncErrorBoundary(userExists),
+    hasOnlyValidProperties,
+    asyncErrorBoundary(addPoints),
+  ],
+  redeemPoints: [
+    asyncErrorBoundary(userExists),
+    hasOnlyValidProperties,
+    asyncErrorBoundary(redeemPoints),
+  ]
 };

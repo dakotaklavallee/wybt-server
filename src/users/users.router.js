@@ -15,4 +15,25 @@ router
 .delete(controller.delete)
 .all(methodNotAllowed);
 
+router
+.route("/:userId/advance")
+.put(controller.advanceUser)
+.all(methodNotAllowed);
+
+router
+.route("/:userId/avatar")
+.put(controller.updateAvatar)
+.all(methodNotAllowed);
+
+router
+.route("/:userId/finishSurvey")
+.put(controller.finishSurvey)
+.all(methodNotAllowed);
+
+router
+.route("/:userId/points")
+.put(controller.addPoints)
+.delete(controller.redeemPoints)
+.all(methodNotAllowed);
+
 module.exports = router;

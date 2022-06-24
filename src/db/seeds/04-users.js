@@ -6,6 +6,7 @@ exports.seed = async function(knex) {
       points: 0,
       survey_done: false,
       avatar_id: 1,
+      survey_index: 1
     },
     {
       username: "sneakerhead1972",
@@ -13,6 +14,7 @@ exports.seed = async function(knex) {
       points: 1000,
       survey_done: true,
       avatar_id: 2,
+      survey_index: 1
     },
     {
       username: "codysmiles",
@@ -20,6 +22,7 @@ exports.seed = async function(knex) {
       points: 200,
       survey_done: false,
       avatar_id: 5,
+      survey_index: 1
     },
   ]);
 };
