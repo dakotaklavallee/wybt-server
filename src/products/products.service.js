@@ -2,7 +2,8 @@ const knex = require('../db/connection.js');
 
 function list(){
     return knex("products")
-    .select("*");
+    .select("*")
+    .orderBy(product_id);
 }
 
 function read(productId){

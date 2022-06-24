@@ -7,6 +7,16 @@ router.route("/")
 .all(methodNotAllowed);
 
 router
+.route("/:productId/yes")
+.put(controller.updateYes)
+.all(methodNotAllowed);
+
+router
+.route("/:productId/no")
+.put(controller.updateNo)
+.all(methodNotAllowed);
+
+router
 .route("/:productId")
 .get(controller.read)
 .put(controller.update)

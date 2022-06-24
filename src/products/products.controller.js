@@ -16,7 +16,7 @@ const VALID_PROPERTIES = [
 ];
 
 function hasOnlyValidProperties(req, res, next) {
-  const { data = {} } = req.body;
+  const { data = {} } = req.body
 
   const invalidFields = Object.keys(data).filter(
     (field) => !VALID_PROPERTIES.includes(field)
@@ -63,8 +63,30 @@ async function update(req, res) {
   res.json({ data });
 }
 
+async function updateYes(req, res) {
+  const product = res.locals.product;
+  const updatedProduct = {
+    ...product,
+    said_yes: (product.said_yes + 1)
+  };
+  const data = await service.update(updatedProduct);
+  res.json({ data });
+}
+
+async function updateNo(req, res) {
+  const product = res.locals.product;
+  const updatedProduct = {
+    ...product,
+    said_no: (product.said_no + 1)
+  };
+  const data = await service.update(updatedProduct);
+  res.json({ data });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(productExists), read],
   update: [hasOnlyValidProperties, hasRequiredValidNums, asyncErrorBoundary(productExists), update],
+  updateYes: [asyncErrorBoundary(productExists), hasOnlyValidProperties, hasRequiredValidNums, asyncErrorBoundary(updateYes)],
+  updateNo: [asyncErrorBoundary(productExists), hasOnlyValidProperties, hasRequiredValidNums, asyncErrorBoundary(updateNo)],
 };
