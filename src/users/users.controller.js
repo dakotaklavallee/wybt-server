@@ -21,6 +21,7 @@ const VALID_PROPERTIES = [
   "created_at",
   "updated_at",
   "survey_index",
+  "redeemedPoints"
 ];
 
 function hasOnlyValidProperties(req, res, next) {
