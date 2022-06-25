@@ -55,6 +55,13 @@ function addLike(newLike){
   .then((createdRecords) => createdRecords[0]);
 }
 
+function removeLike(user_id, product_id){
+  return knex("users_products")
+  .where({ user_id })
+  .where({ product_id })
+  .del();
+}
+
 module.exports = {
   list,
   read,
@@ -63,4 +70,5 @@ module.exports = {
   destroy,
   listLikes,
   addLike,
+  removeLike,
 };

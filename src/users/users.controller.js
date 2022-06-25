@@ -149,7 +149,8 @@ async function addLike(req, res){
 }
 
 async function removeLike(req, res){
-  return null;
+  await service.removeLike(res.locals.user.user_id, req.body.data.product_id);
+  res.sendStatus(204);
 }
 
 
@@ -170,6 +171,7 @@ module.exports = {
     asyncErrorBoundary(update),
   ],
   delete: [asyncErrorBoundary(userExists), asyncErrorBoundary(destroy)],
+  removeLike: [asyncErrorBoundary(userExists), asyncErrorBoundary(removeLike)],
   advanceUser: [
     asyncErrorBoundary(userExists),
     hasOnlyValidProperties,

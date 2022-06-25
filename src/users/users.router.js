@@ -40,6 +40,7 @@ router
 .route("/:userId/likes")
 .get(controller.getLikes)
 .post(controller.addLike)
+.delete(controller.removeLike)
 .all(methodNotAllowed);
 
 module.exports = router;
