@@ -64,6 +64,7 @@ function read(req, res) {
 }
 
 async function create(req, res) {
+  console.log(req.body);
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
 }
@@ -142,7 +143,6 @@ module.exports = {
   read: [asyncErrorBoundary(userExists), read],
   create: [
     hasOnlyValidProperties,
-    hasRequiredProperties,
     asyncErrorBoundary(create),
   ],
   update: [
