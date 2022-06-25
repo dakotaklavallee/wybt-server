@@ -36,4 +36,10 @@ router
 .delete(controller.redeemPoints)
 .all(methodNotAllowed);
 
+router
+.route("/:userId/likes")
+.get(controller.getLikes)
+.post(controller.addLike)
+.all(methodNotAllowed);
+
 module.exports = router;

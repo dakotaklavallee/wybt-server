@@ -4,5 +4,6 @@ module.exports.seed = function (knex) {
     .del()
     .then(() => knex("surveys").del())
     .then(() => knex("products").del())
-    .then(() => knex("users").del());
+    .then(() => knex("users").del())
+    .then(() => knex("users_products").del());
 };

@@ -64,7 +64,6 @@ function read(req, res) {
 }
 
 async function create(req, res) {
-  console.log(req.body);
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
 }
@@ -138,13 +137,31 @@ async function redeemPoints(req, res){
   res.json({ data });
 }
 
+async function getLikes(req, res){
+  const user = res.locals.user
+  const data = await service.listLikes(user.user_id);
+  res.json({ data })
+} 
+
+async function addLike(req, res){
+  const data = await service.addLike(req.body.data);
+  res.status(201).json({ data });
+}
+
+async function removeLike(req, res){
+  return null;
+}
+
+
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(userExists), read],
+  getLikes: [asyncErrorBoundary(userExists), getLikes],
   create: [
     hasOnlyValidProperties,
     asyncErrorBoundary(create),
   ],
+  addLike,
   update: [
     asyncErrorBoundary(userExists),
     hasOnlyValidProperties,
